@@ -36,16 +36,24 @@ public static void main(String[] args) throws Exception {
 			new InputStreamReader(connectionSocket.getInputStream()));
 		DataOutputStream outToClient = new DataOutputStream(
 			connectionSocket.getOutputStream());
-		String clientMessage = inFromClient.readLine();
-		System.out.println("The client said: " + clientMessage);
+		String clientFile = inFromClient.readLine();
+		System.out.println("The client requested: " + clientFile);
 
-
-
-
-		outToClient.writeBytes(clientMessage+"\n");
+		//for now lets assume the file is there and begin the transfer
+		File fileToSend = new File(clientFile);
+		byte [] mybytearray = new byte [(int)clientFile.length()];
+		FileInputStream fis = new FileInputStream(clientFile);
+		BufferedInputStream bis = new BufferedInputStream(fis);
+		bis.read(mybytearray,0,mybytearray.length);
+		OutputStream os = connectionSocket.getOutputStream();
+		os.write(mybytearray,0,mybytearray.length);
+		
+		outToClient.flush();
+		System.out.println("File has been sent!");
+		//outToClient.writeBytes(clientFile+"\n");
 
 		connectionSocket.close();
-
+		connections.remove(connectionSocket);
 		}
 
 

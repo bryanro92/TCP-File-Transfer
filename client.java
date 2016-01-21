@@ -11,7 +11,21 @@ import java.util.Scanner;
 public class client {
 
 	private void clientConnect(){
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+
+	}
+
+
+public static void main(String[] args) throws Exception{
+	String uSocket = "";
+	String uIP = "";
+	String file = "";
+	System.out.println("M8! Surfs up");
+	Socket clientSocket = null;
+
+	//grabs port and ip from client. error checks. if pass this then we
+	//have connected to server
+	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 	System.out.print("Ay m8: Enter in a port: ");
 
@@ -36,7 +50,7 @@ public class client {
 
 
 	try {
-		Socket clientSocket = new Socket("127.0.0.1", 9876);
+		clientSocket = new Socket("127.0.0.1", 9876);
 		// Socket clientSocket = new Socket(uIP, Integer.parseInt(uSocket));
 	}
 	catch (Exception e){
@@ -44,19 +58,6 @@ public class client {
 		System.exit(1);
 	}
 
-
-	}
-
-
-public static void main(String[] args){
-	String uSocket = "";
-	String uIP = "";
-	String file = "";
-	System.out.println("M8! Surfs up");
-
-	//grabs port and ip from client. error checks. if pass this then we
-	//have connected to server
-	clientConnect();
 	
 	System.out.println("Crikey! Succesfully connected to server");
 
@@ -71,20 +72,29 @@ public static void main(String[] args){
 
 
 
- 	System.out.println("Enter in a file to download m8: ");
-
+ 	System.out.print("Enter in a file to download m8: ");
+ 	System.out.println();
 	String fileName = inFromUser.readLine();
 	//sends over socket
-	outToServer.writeBytes(fileName+"\n");
+	//hard coded for testing
+	outToServer.writeBytes("/Users/WhiteOwl/Desktop/test.txt"+"\n");
+	fileName = "/Users/WhiteOwl/Desktop/test.txt";
 
-	System.out.println("Client is requesting file: " + fileName);
+	System.out.println("Server will fetch: " + fileName);
+	System.out.println("jk. currently hardcoded to: /Users/WhiteOwl/Desktop/test.txt");
 
 
- 	System.out.println("You want to download " + file
- 		+ " m8? Crikey");
+	//receive file
+	int current = 0;
+	byte [] mybytearray = new byte [6022386];
+	InputStream is = clientSocket.getInputStream();
+	FileOutputStream fos = new FileOutputStream(fileName);
+	BufferedOutputStream bos = new BufferedOutputStream(fos);
+	int bytesRead = is.read(mybytearray,0,mybytearray.length);
+	current = bytesRead;
+
+
  	
-
-
 
 
 
