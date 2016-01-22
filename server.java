@@ -51,7 +51,7 @@ public static void main(String[] args) throws Exception {
 		outToClient.flush();
 		System.out.println("File has been sent!");
 		//outToClient.writeBytes(clientFile+"\n");
-
+		//hm
 		connectionSocket.close();
 		connections.remove(connectionSocket);
 		}
