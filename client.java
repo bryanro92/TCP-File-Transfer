@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 public class client {
 
+  public final static int FILE_SIZE = 1022386;
 
 public static void main(String[] args) throws Exception{
 	String uSocket = "";
@@ -72,21 +73,31 @@ public static void main(String[] args) throws Exception{
 	String fileName = inFromUser.readLine();
 	//sends over socket
 	//hard coded for testing
-	outToServer.writeBytes("/Users/WhiteOwl/Desktop/test.txt"+"\n");
-	fileName = "/Users/WhiteOwl/Desktop/test.txt";
+	
+	outToServer.writeBytes(fileName);
+	//outToServer.writeBytes("/Users/WhiteOwl/Desktop/test.txt"+"\n");
+	//fileName = "/Users/WhiteOwl/Desktop/test.txt";
 
 	System.out.println("Server will fetch: " + fileName);
-	System.out.println("jk. currently hardcoded to: /Users/WhiteOwl/Desktop/test.txt");
+	//System.out.println("jk. currently hardcoded to: /Users/WhiteOwl/Desktop/test.txt");
 
 
-	//receive file
-	int current = 0;
-	byte [] mybytearray = new byte [6022386];
-	InputStream is = clientSocket.getInputStream();
-	FileOutputStream fos = new FileOutputStream(fileName);
-	BufferedOutputStream bos = new BufferedOutputStream(fos);
-	int bytesRead = is.read(mybytearray,0,mybytearray.length);
-	current = bytesRead;
+	//receive file	
+   int bytesRead; 
+   int currentTot = 0; 
+   byte [] bytearray = new byte [FILE_SIZE]; 
+   InputStream is = clientSocket.getInputStream(); 
+   FileOutputStream fos = new FileOutputStream(fileName); 
+   BufferedOutputStream bos = new BufferedOutputStream(fos); 
+   bytesRead = is.read(bytearray,0,bytearray.length); 
+   currentTot = bytesRead;
+    do { bytesRead = is.read(bytearray, currentTot, (bytearray.length-currentTot)); 
+      if(bytesRead >= 0) currentTot += bytesRead;
+       } while(bytesRead > -1); 
+       bos.write(bytearray, 0 , currentTot); 
+       bos.flush(); 
+       bos.close(); 
+       clientSocket.close(); 
 
 
  	
