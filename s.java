@@ -22,8 +22,13 @@ public static void main(String[] args) throws Exception {
 	Scanner sc = new Scanner(System.in);
 	String uSocket = sc.next();
 	System.out.println();
-	ServerSocket listenSocket = new ServerSocket(9876);
+		ServerSocket listenSocket = null;
+	try {
+	listenSocket = new ServerSocket(9876);
 	//ServerSocket listenSocket = new ServerSocket(Integer.parseInt(uSocket));
+	} catch (IOException ioe){
+		System.out.println("Invalid socket m8!");
+	}
 	System.out.println("Server listening...\nfrom the land down under \n" +
 			"on port: \n" + listenSocket + "\n");
 	while (true){
@@ -46,8 +51,8 @@ public static void main(String[] args) throws Exception {
 		 if (transferFile.exists() == false){
 		 	outToClient.writeBytes("m8 the file doesn't exist!");
 		 	System.out.println("File does not exist");
-		 	      connectionSocket.close(); 
-		 	      		connections.remove(connectionSocket);
+		 	connectionSocket.close(); 
+		 	connections.remove(connectionSocket);
 
 		 }
 else {
