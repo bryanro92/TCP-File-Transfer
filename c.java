@@ -45,13 +45,13 @@ public static void main(String[] args) throws Exception{
 		System.out.println("no no no. IP Address failed");
 		System.exit(1);
 	}
-	System.out.println("We'll get right on connecting you to: " + uIP +
+	System.out.println("We'll get right on connecting you to:\nIP: " + uIP +
 		"\nOn socket: " + uSocket);
 
 
 	try {
-		socket = new Socket("127.0.0.1", 9876);
-		// Socket clientSocket = new Socket(uIP, Integer.parseInt(uSocket));
+		//socket = new Socket("127.0.0.1", 9876);
+		socket = new Socket(uIP, Integer.parseInt(uSocket));
 	}
 	catch (Exception e){
 		System.out.println("Hm m8 dat didn't work our quite well. no connection");
@@ -59,6 +59,7 @@ public static void main(String[] args) throws Exception{
 	}
 
 	
+
 	System.out.println("Crikey! Succesfully connected to server");
 
 	//lets set up our buffered readers now shall we
@@ -88,7 +89,9 @@ int bytesRead;
 int currentTot = 0;
 byte [] bytearray = new byte [filesize];
   InputStream is = socket.getInputStream(); 
-  FileOutputStream fos = new FileOutputStream("copy.png"); 
+  System.out.println("What would you like to name the incoming file?");
+  String fileDownload = inFromUser.readLine();
+  FileOutputStream fos = new FileOutputStream(fileDownload); 
   BufferedOutputStream bos = new BufferedOutputStream(fos); 
   bytesRead = is.read(bytearray,0,bytearray.length); 
   currentTot = bytesRead; 
