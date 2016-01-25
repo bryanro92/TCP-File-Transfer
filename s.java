@@ -46,9 +46,11 @@ public static void main(String[] args) throws Exception {
 		 if (transferFile.exists() == false){
 		 	outToClient.writeBytes("m8 the file doesn't exist!");
 		 	System.out.println("File does not exist");
-		 	break;
-		 }
+		 	      connectionSocket.close(); 
+		 	      		connections.remove(connectionSocket);
 
+		 }
+else {
    byte [] bytearray = new byte [(int)transferFile.length()];
     FileInputStream fin = new FileInputStream(transferFile); 
     BufferedInputStream bin = new BufferedInputStream(fin); 
@@ -66,7 +68,7 @@ public static void main(String[] args) throws Exception {
 
 		connections.remove(connectionSocket);
 		}
-
+}
 
 	}
 

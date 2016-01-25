@@ -88,7 +88,7 @@ int bytesRead;
 int currentTot = 0;
 byte [] bytearray = new byte [filesize];
   InputStream is = socket.getInputStream(); 
-  FileOutputStream fos = new FileOutputStream("copy.txt"); 
+  FileOutputStream fos = new FileOutputStream("copy.png"); 
   BufferedOutputStream bos = new BufferedOutputStream(fos); 
   bytesRead = is.read(bytearray,0,bytearray.length); 
   currentTot = bytesRead; 
