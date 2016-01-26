@@ -28,16 +28,19 @@ public static void main(String[] args) throws Exception{
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 	System.out.print("Ay m8: Enter in a port: ");
-
+	boolean portValue = false;
 
 	//Requests PORT and IP from CLIENT
-	try {
+	while(portValue != true){
 		uSocket = br.readLine();
+		int checkSocket = Integer.parseInt(uSocket);
+		if((checkSocket >= 1) && (checkSocket <= 65535)){
+			portValue = true;
+		} else{
+			System.out.print("He ym8! Please enter valid port number: ");
+		}
 	}
-	catch (IOException ioe){
-		System.out.println("Bloody hell m8 dat port ain't rite");
-		System.exit(1);
-	}
+	
 	System.out.print("Crikey m8, we need an IP Address to connect to: ");
 	try {
 		uIP = br.readLine();
@@ -88,24 +91,21 @@ int filesize=1022386;
 int bytesRead; 
 int currentTot = 0;
 byte [] bytearray = new byte [filesize];
-  InputStream is = socket.getInputStream(); 
-  System.out.println("What would you like to name the incoming file?");
-  String fileDownload = inFromUser.readLine();
-  FileOutputStream fos = new FileOutputStream(fileDownload); 
-  BufferedOutputStream bos = new BufferedOutputStream(fos); 
-  bytesRead = is.read(bytearray,0,bytearray.length); 
-  currentTot = bytesRead; 
-  do { bytesRead = is.read(bytearray, currentTot, (bytearray.length-currentTot)); 
-    if(bytesRead >= 0) currentTot += bytesRead; 
-  } while(bytesRead > -1); 
-   bos.write(bytearray, 0 , currentTot);
-   bos.flush(); 
-   bos.close(); 
-   socket.close();
+ 	InputStream is = socket.getInputStream(); 
+  	System.out.println("What would you like to name the incoming file?");
+  	String fileDownload = inFromUser.readLine();
+  	FileOutputStream fos = new FileOutputStream(fileDownload); 
+  	BufferedOutputStream bos = new BufferedOutputStream(fos); 
+  	bytesRead = is.read(bytearray,0,bytearray.length); 
+  	currentTot = bytesRead; 
+  	do { bytesRead = is.read(bytearray, currentTot, (bytearray.length-currentTot)); 
+    	if(bytesRead >= 0) currentTot += bytesRead; 
+  	} while(bytesRead > -1); 
+   	bos.write(bytearray, 0 , currentTot);
+   	bos.flush(); 
+   	bos.close(); 
+   	socket.close();
  	
-
-
-
 }
 
 
