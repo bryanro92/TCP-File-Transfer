@@ -1,5 +1,5 @@
 /*
-Ross Bryan and Nate Lentz
+Ross Bryan
 Project 1
 CIS 457
 1/20/16
@@ -8,34 +8,32 @@ import java.io.*;
 import java.net.*;
 import java.util.Scanner;
 
-public class c {
+public class client {
 
+  public final static int FILE_SIZE = 1022386;
 
 public static void main(String[] args) throws Exception{
 	String uSocket = "";
 	String uIP = "";
 	String file = "";
 	System.out.println("M8! Surfs up");
-	Socket socket = null;
+	Socket clientSocket = null;
 
 	//grabs port and ip from client. error checks. if pass this then we
 	//have connected to server
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 	System.out.print("Ay m8: Enter in a port: ");
-	boolean portValue = false;
+
 
 	//Requests PORT and IP from CLIENT
-	while(portValue != true){
+	try {
 		uSocket = br.readLine();
-		int checkSocket = Integer.parseInt(uSocket);
-		if((checkSocket >= 1) || (checkSocket <= 65535)){
-			portValue = true;
-		} else{
-			System.out.print("Hey m8! Please enter valid port number: ");
-		}
 	}
-	
+	catch (IOException ioe){
+		System.out.println("Bloody hell m8 dat port ain't rite");
+		System.exit(1);
+	}
 	System.out.print("Crikey m8, we need an IP Address to connect to: ");
 	try {
 		uIP = br.readLine();
@@ -43,13 +41,13 @@ public static void main(String[] args) throws Exception{
 		System.out.println("no no no. IP Address failed");
 		System.exit(1);
 	}
-	System.out.println("We'll get right on connecting you to:\nIP: " + uIP +
+	System.out.println("We'll get right on connecting you to: " + uIP +
 		"\nOn socket: " + uSocket);
 
 
 	try {
-		//socket = new Socket("127.0.0.1", 9876);
-		socket = new Socket(uIP, Integer.parseInt(uSocket));
+		clientSocket = new Socket("127.0.0.1", 9876);
+		// Socket clientSocket = new Socket(uIP, Integer.parseInt(uSocket));
 	}
 	catch (Exception e){
 		System.out.println("Hm m8 dat didn't work our quite well. no connection");
@@ -57,15 +55,14 @@ public static void main(String[] args) throws Exception{
 	}
 
 	
-
 	System.out.println("Crikey! Succesfully connected to server");
 
 	//lets set up our buffered readers now shall we
 	DataOutputStream outToServer =
-		new DataOutputStream(socket.getOutputStream());
+		new DataOutputStream(clientSocket.getOutputStream());
 	BufferedReader inFromServer =
 		new BufferedReader(
-			new InputStreamReader(socket.getInputStream()));
+			new InputStreamReader(clientSocket.getInputStream()));
 	BufferedReader inFromUser =
 		new BufferedReader(new InputStreamReader(System.in));
 
@@ -76,31 +73,37 @@ public static void main(String[] args) throws Exception{
 	String fileName = inFromUser.readLine();
 	//sends over socket
 	//hard coded for testing
-	outToServer.writeBytes(fileName +"\n");
-
+	
+	outToServer.writeBytes(fileName);
+	//outToServer.writeBytes("/Users/WhiteOwl/Desktop/test.txt"+"\n");
+	//fileName = "/Users/WhiteOwl/Desktop/test.txt";
 
 	System.out.println("Server will fetch: " + fileName);
+	//System.out.println("jk. currently hardcoded to: /Users/WhiteOwl/Desktop/test.txt");
 
 
-int filesize=1022386; 
-int bytesRead; 
-int currentTot = 0;
-byte [] bytearray = new byte [filesize];
- 	InputStream is = socket.getInputStream(); 
-  	System.out.println("What would you like to name the incoming file?");
-  	String fileDownload = inFromUser.readLine();
-  	FileOutputStream fos = new FileOutputStream(fileDownload); 
-  	BufferedOutputStream bos = new BufferedOutputStream(fos); 
-  	bytesRead = is.read(bytearray,0,bytearray.length); 
-  	currentTot = bytesRead; 
-  	do { bytesRead = is.read(bytearray, currentTot, (bytearray.length-currentTot)); 
-    	if(bytesRead >= 0) currentTot += bytesRead; 
-  	} while(bytesRead > -1); 
-   	bos.write(bytearray, 0 , currentTot);
-   	bos.flush(); 
-   	bos.close(); 
-   	socket.close();
+	//receive file	
+   int bytesRead; 
+   int currentTot = 0; 
+   byte [] bytearray = new byte [FILE_SIZE]; 
+   InputStream is = clientSocket.getInputStream(); 
+   FileOutputStream fos = new FileOutputStream(fileName); 
+   BufferedOutputStream bos = new BufferedOutputStream(fos); 
+   bytesRead = is.read(bytearray,0,bytearray.length); 
+   currentTot = bytesRead;
+    do { bytesRead = is.read(bytearray, currentTot, (bytearray.length-currentTot)); 
+      if(bytesRead >= 0) currentTot += bytesRead;
+       } while(bytesRead > -1); 
+       bos.write(bytearray, 0 , currentTot); 
+       bos.flush(); 
+       bos.close(); 
+       clientSocket.close(); 
+
+
  	
+
+
+
 }
 
 
