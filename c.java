@@ -24,11 +24,17 @@ public static void main(String[] args) throws Exception{
 
 	System.out.print("Ay m8: Enter in a port: ");
 	boolean portValue = false;
-
+	int checkSocket = -1;
 	//Requests PORT and IP from CLIENT
 	while(portValue != true){
 		uSocket = br.readLine();
-		int checkSocket = Integer.parseInt(uSocket);
+		
+		try {
+		checkSocket = Integer.parseInt(uSocket);
+	} catch (Exception e){
+		System.out.println("invalid port");
+		System.exit(1);
+	}
 		if((checkSocket >= 1) || (checkSocket <= 65535)){
 			portValue = true;
 		} else{
@@ -81,6 +87,11 @@ public static void main(String[] args) throws Exception{
 
 	System.out.println("Server will fetch: " + fileName);
 
+	String serverMessage = inFromServer.readLine();
+	System.out.println("Message: " + serverMessage);
+	if (serverMessage.equals("m8 the file doesn't exist!")){
+		System.exit(1);
+	}
 
 int filesize=1022386; 
 int bytesRead; 

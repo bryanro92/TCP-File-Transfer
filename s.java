@@ -24,10 +24,11 @@ public static void main(String[] args) throws Exception {
 	int num = -1;
 	try {
 	num = Integer.parseInt(uSocket);
-	} catch (Exception e){
-		System.out.println("Invalid port");
-		System.exit(1);
-	}
+}
+catch (Exception e){
+	System.out.println("Invalid port");
+	System.exit(1);
+}
 	if (num < 1024 || num > 65535){
 		System.out.println("Invalid port m8");
 		System.exit(1);
