@@ -1,5 +1,5 @@
 /*
-Ross Bryan and Nate Lentz
+Ross Bryan
 Project 1
 CIS 457
 1/20/16
@@ -8,7 +8,12 @@ import java.io.*;
 import java.net.*;
 import java.util.Scanner;
 
-public class c {
+public class c1 {
+
+	private void clientConnect(){
+		
+
+	}
 
 
 public static void main(String[] args) throws Exception{
@@ -23,25 +28,16 @@ public static void main(String[] args) throws Exception{
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 	System.out.print("Ay m8: Enter in a port: ");
-	boolean portValue = false;
-	int checkSocket = -1;
+
+
 	//Requests PORT and IP from CLIENT
-	while(portValue != true){
+	try {
 		uSocket = br.readLine();
-		
-		try {
-		checkSocket = Integer.parseInt(uSocket);
-	} catch (Exception e){
-		System.out.println("invalid port");
+	}
+	catch (IOException ioe){
+		System.out.println("Bloody hell m8 dat port ain't rite");
 		System.exit(1);
 	}
-		if((checkSocket >= 1) || (checkSocket <= 65535)){
-			portValue = true;
-		} else{
-			System.out.print("Hey m8! Please enter valid port number: ");
-		}
-	}
-	
 	System.out.print("Crikey m8, we need an IP Address to connect to: ");
 	try {
 		uIP = br.readLine();
@@ -87,31 +83,30 @@ public static void main(String[] args) throws Exception{
 
 	System.out.println("Server will fetch: " + fileName);
 
-	String serverMessage = inFromServer.readLine();
-	System.out.println("Message: " + serverMessage);
-	if (serverMessage.equals("m8 the file doesn't exist!")){
-		System.exit(1);
-	}
+
 
 int filesize=1022386; 
 int bytesRead; 
 int currentTot = 0;
 byte [] bytearray = new byte [filesize];
- 	InputStream is = socket.getInputStream(); 
-  	System.out.println("What would you like to name the incoming file?");
-  	String fileDownload = inFromUser.readLine();
-  	FileOutputStream fos = new FileOutputStream(fileDownload); 
-  	BufferedOutputStream bos = new BufferedOutputStream(fos); 
-  	bytesRead = is.read(bytearray,0,bytearray.length); 
-  	currentTot = bytesRead; 
-  	do { bytesRead = is.read(bytearray, currentTot, (bytearray.length-currentTot)); 
-    	if(bytesRead >= 0) currentTot += bytesRead; 
-  	} while(bytesRead > -1); 
-   	bos.write(bytearray, 0 , currentTot);
-   	bos.flush(); 
-   	bos.close(); 
-   	socket.close();
+  InputStream is = socket.getInputStream(); 
+  System.out.println("What would you like to name the incoming file?");
+  String fileDownload = inFromUser.readLine();
+  FileOutputStream fos = new FileOutputStream(fileDownload); 
+  BufferedOutputStream bos = new BufferedOutputStream(fos); 
+  bytesRead = is.read(bytearray,0,bytearray.length); 
+  currentTot = bytesRead; 
+  do { bytesRead = is.read(bytearray, currentTot, (bytearray.length-currentTot)); 
+    if(bytesRead >= 0) currentTot += bytesRead; 
+  } while(bytesRead > -1); 
+   bos.write(bytearray, 0 , currentTot);
+   bos.flush(); 
+   bos.close(); 
+   socket.close();
  	
+
+
+
 }
 
 

@@ -58,7 +58,7 @@ catch (Exception e){
 		System.out.println("The client requested: " + clientFile);
 
 		//for now lets assume the file is there and begin the transfer
-		System.out.println("This is what the client entered: " + clientFile);
+		//System.out.println("This is what the client entered: " + clientFile);
 		 File transferFile = new File (clientFile);
 
 		 if (transferFile.exists() == false){
