@@ -21,6 +21,13 @@ public static void main(String[] args) throws Exception {
 
 	Scanner sc = new Scanner(System.in);
 	String uSocket = sc.next();
+
+	int num = Integer.parseInt(uSocket);
+	if (num < 1024 || num > 65535){
+		System.out.println("Invalid port m8");
+		System.exit(1);
+	}
+
 	System.out.println();
 		ServerSocket listenSocket = null;
 	try {

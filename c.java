@@ -29,7 +29,7 @@ public static void main(String[] args) throws Exception{
 	while(portValue != true){
 		uSocket = br.readLine();
 		int checkSocket = Integer.parseInt(uSocket);
-		if((checkSocket >= 1) && (checkSocket <= 65535)){
+		if((checkSocket >= 1) || (checkSocket <= 65535)){
 			portValue = true;
 		} else{
 			System.out.print("Hey m8! Please enter valid port number: ");
