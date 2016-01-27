@@ -10,11 +10,6 @@ import java.util.Scanner;
 
 public class c {
 
-	private void clientConnect(){
-		
-
-	}
-
 
 public static void main(String[] args) throws Exception{
 	String uSocket = "";
@@ -37,7 +32,7 @@ public static void main(String[] args) throws Exception{
 		if((checkSocket >= 1) && (checkSocket <= 65535)){
 			portValue = true;
 		} else{
-			System.out.print("He ym8! Please enter valid port number: ");
+			System.out.print("Hey m8! Please enter valid port number: ");
 		}
 	}
 	

@@ -24,8 +24,8 @@ public static void main(String[] args) throws Exception {
 	System.out.println();
 		ServerSocket listenSocket = null;
 	try {
-	listenSocket = new ServerSocket(9876);
-	//ServerSocket listenSocket = new ServerSocket(Integer.parseInt(uSocket));
+	//listenSocket = new ServerSocket(9876);
+    listenSocket = new ServerSocket(Integer.parseInt(uSocket));
 	} catch (IOException ioe){
 		System.out.println("Invalid socket m8!");
 	}
