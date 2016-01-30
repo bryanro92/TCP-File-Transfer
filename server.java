@@ -9,7 +9,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 
-public class s{
+public class server {
 public static void main(String[] args) throws Exception {
 	//this is for part 2 - maintains the number of connections
 	ArrayList<Socket> connections = new ArrayList<Socket>();

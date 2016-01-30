@@ -1,5 +1,5 @@
 /*
-Ross Bryan
+Ross Bryan & Nate Lentz
 Project 1
 CIS 457
 1/20/16
@@ -8,12 +8,8 @@ import java.io.*;
 import java.net.*;
 import java.util.Scanner;
 
-public class c1 {
+public class client {
 
-	private void clientConnect(){
-		
-
-	}
 
 
 public static void main(String[] args) throws Exception{
