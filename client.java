@@ -78,9 +78,12 @@ public static void main(String[] args) throws Exception{
 
 
 	System.out.println("Server will fetch: " + fileName);
-
-
-
+	String serverMessage = inFromServer.readLine();
+if (serverMessage.equals("m8 the file doesn't exist!")){
+		System.out.println(serverMessage);
+		System.exit(1);
+	}
+else {
 int filesize=1022386; 
 int bytesRead; 
 int currentTot = 0;
@@ -100,7 +103,7 @@ byte [] bytearray = new byte [filesize];
    bos.close(); 
    socket.close();
  	
-
+}
 
 
 }

@@ -8,8 +8,27 @@ import java.net.*;
 import java.util.Scanner;
 import java.util.ArrayList;
 
+/*
 
+*/
 public class server {
+
+	/***************************************
+	class to run on a thread for each client
+	****************************************/
+	private class ClientHandler implements Runnable {
+		Socket connectionSocket;
+		ClientHandler(Socket s){
+			connectionSocket = s;
+		}
+		public void run(){
+			
+		}
+
+
+
+	}
+
 public static void main(String[] args) throws Exception {
 	//this is for part 2 - maintains the number of connections
 	ArrayList<Socket> connections = new ArrayList<Socket>();
