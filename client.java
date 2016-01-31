@@ -78,7 +78,7 @@ public static void main(String[] args) throws Exception{
 
 
 	System.out.println("Server will fetch: " + fileName);
-	String serverMessage = inFromServer.readLine();
+	String serverMessage = "";//inFromServer.readLine();
 if (serverMessage.equals("m8 the file doesn't exist!")){
 		System.out.println(serverMessage);
 		System.exit(1);
@@ -89,6 +89,7 @@ int bytesRead;
 int currentTot = 0;
 byte [] bytearray = new byte [filesize];
   InputStream is = socket.getInputStream(); 
+  System.out.println(is.toString());
   System.out.println("What would you like to name the incoming file?");
   String fileDownload = inFromUser.readLine();
   FileOutputStream fos = new FileOutputStream(fileDownload); 
