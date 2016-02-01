@@ -24,7 +24,7 @@ public static void main(String[] args) throws Exception{
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 	System.out.print("Ay m8: Enter in a port: ");
-
+	
 
 	//Requests PORT and IP from CLIENT
 	try {
@@ -66,13 +66,18 @@ public static void main(String[] args) throws Exception{
 			new InputStreamReader(socket.getInputStream()));
 	BufferedReader inFromUser =
 		new BufferedReader(new InputStreamReader(System.in));
-
-
-
- 	System.out.print("Enter in a file to download m8: ");
+		int x = 0;
+ 	while(x < 1){
+ 		System.out.print("Enter in a file to download m8: ");
+		String fileName = inFromUser.readLine();
+ 		if (fileName.equals("exit")){
+ 			System.out.println("Cleanly disconnecting");
+ 			// close some stuff ? 
+ 			System.exit(0);
+ 		}
+ 		else {
  	System.out.println();
-	String fileName = inFromUser.readLine();
-	//sends over socket
+		//sends over socket
 	//hard coded for testing
 	outToServer.writeBytes(fileName +"\n");
 
@@ -89,7 +94,6 @@ int bytesRead;
 int currentTot = 0;
 byte [] bytearray = new byte [filesize];
   InputStream is = socket.getInputStream(); 
-  System.out.println(is.toString());
   System.out.println("What would you like to name the incoming file?");
   String fileDownload = inFromUser.readLine();
   FileOutputStream fos = new FileOutputStream(fileDownload); 
@@ -103,10 +107,12 @@ byte [] bytearray = new byte [filesize];
    bos.flush(); 
    bos.close(); 
    socket.close();
- 	
+   System.out.println(fileDownload + " created!\n");
+   System.out.println ("type 'exit' to quit, or ");	
+}
 }
 
-
+}
 }
 
 
