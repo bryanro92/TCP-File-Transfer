@@ -79,11 +79,7 @@ import java.util.ArrayList;
 		bis.close();
 		client.close();
 		}
-	    } catch(FileNotFoundException e) {
-		System.out.println("Client requested a file that does not exist.");
-
-		return;
-	    }
+	    } 
 	    catch (IOException e) {
 		System.out.println("IO failed");
 		System.exit(1);
@@ -106,7 +102,6 @@ public class server {
 *****************************************/
 public static void main(String[] args) throws Exception {
 	//maintains the number of connections
-	ArrayList<Socket> connections = new ArrayList<Socket>();
 
 	String sSocket = "";
 
@@ -141,7 +136,6 @@ public static void main(String[] args) throws Exception {
 
 	while (true){
 		Socket connectionSocket = listenSocket.accept();
-		connections.add(connectionSocket);
 		ClientHandler r = new ClientHandler(connectionSocket);
 		Thread t = new Thread(r);
 		t.start();
