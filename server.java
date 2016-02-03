@@ -13,63 +13,89 @@ import java.util.ArrayList;
 	class to run on a thread for each client
 	****************************************/
 	class ClientHandler implements Runnable {
-		Socket connectionSocket;
-		ClientHandler(Socket s){
-			connectionSocket = s;
+   private Socket client;
+
+    //Constructor
+    ClientHandler(Socket client) {
+	this.client = client;
+    }
+    
+    public void run(){
+    
+	String file = "";
+	
+	    try{
+	   
+		BufferedReader inFromClient = 
+		    new BufferedReader(new InputStreamReader(client.getInputStream()));
+		String fileName = "";
+		//Reads in client's desired file
+		 
+		fileName = inFromClient.readLine();
+		if (fileName == null){
+			System.out.println("Client has disconnected");
+			client.close();
+			return;
 		}
-		public void run(){
-
-			try {
-		System.out.println("Ready the barbie a m8 has connected.");
-		//returns a new socket object that represents server to a specific client
-		BufferedReader inFromClient = new BufferedReader(
-			new InputStreamReader(connectionSocket.getInputStream()));
-		DataOutputStream outToClient = new DataOutputStream(
-			connectionSocket.getOutputStream());
-		String clientFile = inFromClient.readLine();
-		System.out.println("The client requested: " + clientFile);
-
-		//for now lets assume the file is there and begin the transfer
-		//System.out.println("This is what the client entered: " + clientFile);
-		 File transferFile = new File (clientFile);
-
-		 if (transferFile.exists() == false){
-		 	outToClient.writeBytes("m8 the file doesn't exist!");
-		 	System.out.println("File does not exist");
-		 	connectionSocket.close();
-
-		 }
-	else {
-	   byte [] bytearray = new byte [(int)transferFile.length()];
-	    FileInputStream fin = new FileInputStream(transferFile);
-	    BufferedInputStream bin = new BufferedInputStream(fin);
-	    bin.read(bytearray,0,bytearray.length);
-	    OutputStream os = connectionSocket.getOutputStream();
-	     System.out.println("Sending Files...");
-	      os.write(bytearray,0,bytearray.length);
-	      os.flush();
-	      connectionSocket.close();
-	      System.out.println("File transfer complete");
-
-			outToClient.flush();
-			System.out.println("File has been sent!");
-			//outToClient.writeBytes(clientFile+"\n");
-			}
-	}
-
-
-			catch (Exception e){
-				System.out.println("Something went wrong");
-				System.exit(1);
-				}
-			}
+		file = fileName;
+		System.out.println("Client wants " + fileName);
+		
+		if(fileName.equals("exit")){
+		    System.out.println("Client has exited.");
+		    client.close();
+		    return;
 		}
-/*
+	    } catch(IOException e){
+		System.out.println("in or out failed");
+		System.exit(-1);
+	    }
+	
+	    //Attempts to convert file to bytes and transfer to client
+	    try {
+	    
+		File outFile = new File(file);
+		byte[] byteArray = new byte[(int)outFile.length()];
+		FileInputStream fis = new FileInputStream(outFile);
 
-*/
+		BufferedInputStream bis = new BufferedInputStream(fis);
+		bis.read(byteArray, 0, byteArray.length);
+
+		DataOutputStream outToClient = 
+		new DataOutputStream(client.getOutputStream());
+		System.out.println(
+		    "Sending " + file + " (" + byteArray.length + " bytes)");
+		outToClient.write(byteArray, 0, byteArray.length);
+		outToClient.flush();
+		System.out.println("Done.");
+		
+		bis.close();
+		client.close();
+		
+	    } catch(FileNotFoundException e) {
+		System.out.println("Client requested a file that does not exist.");
+		System.out.println("Client disconnected.");
+		System.exit(-1);
+	    }
+	    catch (IOException e) {
+		System.out.println("in or out failed");
+		System.exit(-1);
+	    }
+	
+    }
+}
+/****************************************
+*
+*
+*
+*****************************************/
 public class server {
 
 
+/****************************************
+*
+*
+*
+*****************************************/
 public static void main(String[] args) throws Exception {
 	//maintains the number of connections
 	ArrayList<Socket> connections = new ArrayList<Socket>();
@@ -104,10 +130,11 @@ public static void main(String[] args) throws Exception {
 	}
 	System.out.println("Server listening...\nfrom the land down under \n" +
 			"on port: \n" + listenSocket + "\n");
+
 	while (true){
 		Socket connectionSocket = listenSocket.accept();
 		connections.add(connectionSocket);
-		Runnable r = new ClientHandler(connectionSocket);
+		ClientHandler r = new ClientHandler(connectionSocket);
 		Thread t = new Thread(r);
 		t.start();
 

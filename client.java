@@ -3,117 +3,120 @@ Ross Bryan & Nate Lentz
 Project 1
 CIS 457
 1/20/16
-*/
+ */
 import java.io.*;
 import java.net.*;
 import java.util.Scanner;
 
+/****************************************
+*
+*
+*
+*****************************************/
 public class client {
 
-
-
-public static void main(String[] args) throws Exception{
-	String uSocket = "";
-	String uIP = "";
-	String file = "";
-	System.out.println("M8! Surfs up");
-	Socket socket = null;
-
-	//grabs port and ip from client. error checks. if pass this then we
-	//have connected to server
-	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-	System.out.print("Ay m8: Enter in a port: ");
-	
-
-	//Requests PORT and IP from CLIENT
+private static String askForIP(){
+	//Determines what IP & port the user will connect to
+	BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+	System.out.print("Crikey m8, we need an IP Address to connect to: ");
+	String ip = "";
 	try {
-		uSocket = br.readLine();
+	ip = inFromUser.readLine();
+	if (!ip.equals("127.0.0.1")) {
+	    System.out.println("Invalid IP address.");
+	    System.exit(1);
+		}
+	} catch (Exception e) {
+		System.out.println("Error getting input");
+	}
+	return ip;
+}
+
+private static int askForPort(){
+	BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+	System.out.print("Ay m8: Enter in a port: ");
+	int uSocket = -1;
+	try {
+		uSocket = Integer.parseInt(inFromUser.readLine());
 	}
 	catch (IOException ioe){
 		System.out.println("Bloody hell m8 dat port ain't rite");
 		System.exit(1);
 	}
-	System.out.print("Crikey m8, we need an IP Address to connect to: ");
-	try {
-		uIP = br.readLine();
-	} catch (IOException ioe) {
-		System.out.println("no no no. IP Address failed");
-		System.exit(1);
-	}
-	System.out.println("We'll get right on connecting you to:\nIP: " + uIP +
-		"\nOn socket: " + uSocket);
-
-
-	try {
-		//socket = new Socket("127.0.0.1", 9876);
-		socket = new Socket(uIP, Integer.parseInt(uSocket));
-	}
-	catch (Exception e){
-		System.out.println("Hm m8 dat didn't work our quite well. no connection");
-		System.exit(1);
-	}
-
-	
-
-	System.out.println("Crikey! Succesfully connected to server");
-
-	//lets set up our buffered readers now shall we
-	DataOutputStream outToServer =
-		new DataOutputStream(socket.getOutputStream());
-	BufferedReader inFromServer =
-		new BufferedReader(
-			new InputStreamReader(socket.getInputStream()));
-	BufferedReader inFromUser =
-		new BufferedReader(new InputStreamReader(System.in));
-		int x = 0;
- 	while(x < 1){
- 		System.out.print("Enter in a file to download m8: ");
-		String fileName = inFromUser.readLine();
- 		if (fileName.equals("exit")){
- 			System.out.println("Cleanly disconnecting");
- 			// close some stuff ? 
- 			System.exit(0);
- 		}
- 		else {
- 	System.out.println();
-		//sends over socket
-	//hard coded for testing
-	outToServer.writeBytes(fileName +"\n");
-
-
-	System.out.println("Server will fetch: " + fileName);
-	String serverMessage = "";//inFromServer.readLine();
-if (serverMessage.equals("m8 the file doesn't exist!")){
-		System.out.println(serverMessage);
-		System.exit(1);
-	}
-else {
-int filesize=1022386; 
-int bytesRead; 
-int currentTot = 0;
-byte [] bytearray = new byte [filesize];
-  InputStream is = socket.getInputStream(); 
-  System.out.println("What would you like to name the incoming file?");
-  String fileDownload = inFromUser.readLine();
-  FileOutputStream fos = new FileOutputStream(fileDownload); 
-  BufferedOutputStream bos = new BufferedOutputStream(fos); 
-  bytesRead = is.read(bytearray,0,bytearray.length); 
-  currentTot = bytesRead; 
-  do { bytesRead = is.read(bytearray, currentTot, (bytearray.length-currentTot)); 
-    if(bytesRead >= 0) currentTot += bytesRead; 
-  } while(bytesRead > -1); 
-   bos.write(bytearray, 0 , currentTot);
-   bos.flush(); 
-   bos.close(); 
-   socket.close();
-   System.out.println(fileDownload + " created!\n");
-   System.out.println ("type 'exit' to quit, or ");	
-}
+	return uSocket;
 }
 
-}
-}
+
+/****************************************
+*
+*
+*
+*****************************************/
+	public static void main(String[] args) throws Exception{
+		
+	String saveFile = "";
+	String ip = askForIP();
+	int port = askForPort();
+
+	//Determines what IP & port the user will connect to
+	BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+
+	while(true){
+	    //Creates socket to connect with server
+	    Socket clientSocket = null;	
+	    try {
+	    clientSocket = new Socket(ip, port);
+		} catch (ConnectException ce){
+			System.out.println("Crikey, unable to connect to server!");
+			System.exit(1);
+		}
+	    System.out.println("Connecting...");
+	    
+	    //Asks user for desired file and sends info to server
+	    byte[] bArray = new byte[1000000];
+	    DataInputStream is = new DataInputStream(clientSocket.getInputStream());
+	    DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+	    System.out.println("What file would you like?");
+	    String fileName = inFromUser.readLine();
+	    outToServer.writeBytes(fileName + '\n');
+	    
+	    if(fileName.equals("exit"))
+		System.exit(-1);
+	    System.out.println("Requesting...");
+	    
+	    saveFile = "new"+fileName;
+
+	    //Recieves server output and saves to new file
+	    try {
+		FileOutputStream fos = new FileOutputStream(saveFile);
+		BufferedOutputStream bos = new BufferedOutputStream(fos);
+		int bytesRead = is.read(bArray, 0, bArray.length);
+		int current = bytesRead;
+		
+		System.out.println(bytesRead);
+		
+		do {
+		    System.out.println(1);
+		    bytesRead = is.read(bArray, current, (bArray.length - current));
+		    System.out.println(2);
+		    if (bytesRead >= 0)
+			current += bytesRead;
+		    System.out.println(3);
+		} while(bytesRead > -1);
+
+		bos.write(bArray, 0, current);
+		bos.flush();
+		System.out.println(
+		    "File " + saveFile + " downloaded (" + current + " bytes read)");
+
+		bos.close();
+		clientSocket.close();
+	    } catch (ArrayIndexOutOfBoundsException aie) {
+		System.out.println("File not found.");
+		System.exit(0);
+	    }
+	}
+	}
 
 
 }
