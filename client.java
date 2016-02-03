@@ -113,7 +113,7 @@ private static int askForPort(){
 		clientSocket.close();
 	    } catch (ArrayIndexOutOfBoundsException aie) {
 		System.out.println("File not found.");
-		System.exit(0);
+		System.exit(1);
 	    }
 	}
 	}

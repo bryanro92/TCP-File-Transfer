@@ -54,6 +54,14 @@ import java.util.ArrayList;
 	    try {
 	    
 		File outFile = new File(file);
+
+
+		 if (!outFile.exists()){
+		 	System.out.println("File does not exist");
+		 	client.close();
+		 }
+		 else {
+
 		byte[] byteArray = new byte[(int)outFile.length()];
 		FileInputStream fis = new FileInputStream(outFile);
 
@@ -70,15 +78,15 @@ import java.util.ArrayList;
 		
 		bis.close();
 		client.close();
-		
+		}
 	    } catch(FileNotFoundException e) {
 		System.out.println("Client requested a file that does not exist.");
-		System.out.println("Client disconnected.");
-		System.exit(-1);
+
+		return;
 	    }
 	    catch (IOException e) {
-		System.out.println("in or out failed");
-		System.exit(-1);
+		System.out.println("IO failed");
+		System.exit(1);
 	    }
 	
     }
